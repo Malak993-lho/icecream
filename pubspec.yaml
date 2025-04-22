@@ -1,0 +1,103 @@
+name: senior_project
+description: "A new Flutter project."
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+    sdk: "3.6.2"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^6.1.4
+  cupertino_icons: ^1.0.8
+  flutter_rating_bar: ^4.0.1  
+  image_picker: ^0.8.7+3  # Latest version as of my knowledge
+  shared_preferences: ^2.2.2
+
+  intl: ^0.20.2
+  syncfusion_flutter_calendar: ^29.1.35
+  
+  timezone: ^0.10.0
+  flutter_datetime_picker: ^1.5.1
+  firebase_core: ^3.13.0
+ 
+  firebase_storage: ^12.4.5
+  
+  cloud_firestore: ^5.6.6
+
+  permission_handler: ^11.4.0
+  firebase_messaging: ^15.2.5
+  firebase_auth: ^5.5.2
+  google_sign_in: ^6.3.0
+  
+  awesome_dialog: ^3.2.1
+  fluttertoast: ^8.2.12
+
+  flutter_map: ^8.1.1
+  latlong2: ^0.9.1  # Required for coordinates
+  location: ^8.0.0
+  http: ^1.3.0
+
+  
+  
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+
+  
+
+
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/MihnaPage.jpg
+    - assets/GoogleLogo.png 
+    - assets/AppleLogo.jpg
+    - assets/Roofer.png
+    - assets/Upholsterer.jpg
+    - assets/blacksmith.jpg
+    - assets/Craftsman.jpg 
+    - assets/KatbKtab.jpg
+    - assets/Joiner.jpg
+    - assets/FloralLetter.jpg
+    - assets/AluminiumFabricator.png
+    - assets/Floorlayer.jpg 
+    - assets/Painter.jpg
+    - assets/Plumber.jpg
+    - assets/BabyChoclate.jpg 
+    - assets/Mason.jpg
+    - assets/glazier.jpg
+    - assets/mechanician.jpg 
+    - assets/kitchen1.jpg
+    - assets/kitchen2.jpg 
+    - assets/Glass.jpg
+    - assets/dayri.jpg
+    - assets/HandCrafted.jpg
+    - assets/Electrician.jpg 
+    - assets/joinerAbd.jpg
+    - assets/joinerFarid.jpg
+    - assets/joinerSamer.jpg
+    - assets/Fjoiner.png
+    - assets/KitchenAbd.jpg
+    - assets/KitchenFarid.jpg
+    - assets/KitchenKhaled.jpg
+    - assets/KitchenSamer.jpg
+    - assets/dayricroped.jpg
+    - assets/beb w 2zez.jpg
+    - assets/drabzin 1.jpg
+    - assets/drabzin 2.jpg
+    - assets/back.jpg
+    - assets/proj1.jpg
+    - assets/hadid.jpg
+    - assets/drabzin 1.jpg
+    - assets/beb 2.jpg
+    - assets/Glass.jpg
+    - assets/hadid.jpg
