@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create & Edit Ice Cream Pack</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      padding: 0;
+      margin: 0;
+      background: #fff8f0;
+    }
+
+    header {
+      background: #fff;
+      padding: 30px 20px 10px;
+      text-align: center;
+      border-bottom: 1px solid #e4d3ba;
+    }
+
+    header h1 {
+      font-size: 32px;
+      color: #d684c1;
+      margin-bottom: 10px;
+    }
+
+    .subtext {
+      color: #b66da4;
+      font-weight: bold;
+    }
+
+    .pricing {
+      font-size: 18px;
+      color: #42200b;
+    }
+
+    .products {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 30px;
+    }
+
+    .product {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      text-align: center;
+      padding: 15px;
+      width: 200px;
+    }
+
+    .product img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      background: #e181c8;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .status-bar {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .icons span {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #eee;
+      margin: 2px;
+    }
+
+    .icons .filled {
+      background: #bb7fbb;
+    }
+
+    .edit-pack {
+      max-width: 90%;
+      margin: 30px auto;
+      padding: 20px;
+      background: #e0b2da;
+      border-radius: 8px;
+    }
+
+    .edit-pack h2 {
+      font-size: 24px;
+      color: #d39fd9;
+      margin-bottom: 20px;
+    }
+
+    .pack-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .pack-item {
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      width: 300px;
+      justify-content: space-between;
+    }
+
+    .pack-item img {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+
+    .pack-info {
+      flex: 1;
+      font-weight: bold;
+      color: #a592a3;
+    }
+
+    .remove-btn {
+      color: #e07bdb;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .footer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 30px;
+      background: #f0e0f1;
+      padding: 15px 20px;
+      border-top: 1px solid #efe5f1;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .clear-btn {
+      background: none;
+      border: 2px solid #db57d2;
+      padding: 8px 16px;
+      border-radius: 5px;
+      color: #cb47c7;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .add-cart-btn {
+      background: #d695cd;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Create Your Own Gift Pack</h1>
+  <div class="subtext">Our coolers hold 6 pints. Nationwide delivery, frozen guaranteed.</div>
+  <div class="pricing">6-PINT COOLER $84.95</div>
+</header>
+
+
+
+<div class="products" id="productList">
+  <!-- Products will be loaded here -->
+</div>
+
+<div class="status-bar">
+  <p id="neededText">6 needed for the 6 pack</p>
+  <div class="icons" id="packIcons"></div>
+</div>
+
+<div class="edit-pack">
+  <h2>Edit & View Pack</h2>
+  <div class="pack-items" id="packItems"></div>
+  <div class="footer-bar">
+    <button class="clear-btn" onclick="clearPack()">CLEAR PACK</button>
+    <div class="needed-count" id="needed">6 needed for the 6 pack</div>
+    <button class="add-cart-btn" id="addToCartBtn" onclick="goToCart()">ADD PACK TO CART</button>
+
+  </div>
+</div>
+
+<script>
+  const MAX_PACK = 6;
+  let pack = [];
+
+  const flavors = [
+    { name: 'Vanilla Bean', image: './imag/buckey biltz chcolclate.png' },
+    { name: 'Strawberry Chocolate Chip', image: './imag/banana Chocolate Chip.png' },
+    { name: 'Chocolate Fudge', image: './imag/Black Cherry Chocolate Chip.png' },
+    { name: 'Mint Chip', image: './imag/bodly bearcat.png' },
+    { name: 'Caramel Crunch', image: './imag/Black Cherry Chocolate Chip.png' },
+    { name: 'Cookies & Cream', image: './imag/buckey biltz chcolclate.png' },
+    { name: 'Lemon Sorbet', image: './imag/butter peacen.png' },
+    { name: 'Blueberry Muffin', image: './imag/Raspberry Chocolate Chip.png' },
+    { name: 'Tropical Coconut', image: './imag/Screenshot 2025-04-18 at 23.56.14.png' },
+    { name: 'Peanut Butter Cup', image: './imag/Brown pancake.png' },
+  ];
+
+  function renderProducts() {
+    const container = document.getElementById("productList");
+    container.innerHTML = "";
+    flavors.forEach((flavor, index) => {
+      container.innerHTML += `
+        <div class="product">
+          <img src="${flavor.image}" alt="${flavor.name}">
+          <h3>${flavor.name}</h3>
+          <button onclick="addToPack(${index})">Add to Pack</button>
+        </div>`;
+    });
+  }
+
+  function addToPack(index) {
+    if (pack.length >= MAX_PACK) {
+      alert("Pack is full!");
+      return;
+    }
+    pack.push(flavors[index]);
+    updateUI();
+  }
+
+  function removeFromPack(index) {
+    pack.splice(index, 1);
+    updateUI();
+  }
+
+  function clearPack() {
+    pack = [];
+    updateUI();
+  }
+
+  function updateUI() {
+    const neededText = document.getElementById("neededText");
+    const needed = document.getElementById("needed");
+    const icons = document.getElementById("packIcons");
+    const packItems = document.getElementById("packItems");
+    const addToCartBtn = document.getElementById("addToCartBtn");
+
+    // Update top status
+    const remaining = MAX_PACK - pack.length;
+    neededText.innerText = `${remaining} needed for the 6 pack`;
+    needed.innerText = `${remaining} needed for the 6 pack`;
+
+    // Update icons
+    icons.innerHTML = "";
+    for (let i = 0; i < MAX_PACK; i++) {
+      const span = document.createElement("span");
+      if (i < pack.length) span.classList.add("filled");
+      icons.appendChild(span);
+    }
+
+    // Update edit pack items
+    packItems.innerHTML = "";
+    pack.forEach((flavor, index) => {
+      packItems.innerHTML += `
+        <div class="pack-item">
+          <img src="${flavor.image}" alt="${flavor.name}">
+          <div class="pack-info">${flavor.name}</div>
+          <div class="remove-btn" onclick="removeFromPack(${index})">&times;</div>
+        </div>`;
+    });
+
+    // Enable/Disable add to cart
+    addToCartBtn.disabled = pack.length < MAX_PACK;
+  }
+
+function goToCart() {
+  let existingCart = JSON.parse(localStorage.getItem("iceCreamCart")) || [];
+
+  // Only continue if the pack has 6 items
+  if (pack.length !== 6) {
+    alert("Please select exactly 6 flavors before adding to cart.");
+    return;
+  }
+
+  // Save the current pack with quantity
+  existingCart.push({
+    items: [...pack],   // save a copy of selected items
+    quantity: 1
+  });
+
+  localStorage.setItem("iceCreamCart", JSON.stringify(existingCart));
+
+  // Redirect to cart page
+  window.location.href = "cart.html";
+}
+
+
+  
+  renderProducts();
+  updateUI();
+</script>
+
+</body>
+</html>

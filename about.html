@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create & Edit Ice Cream Pack</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Previous styles remain the same */
+    
+    /* New additions */
+    .floating-cart {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--primary-color);
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 15px rgba(214, 132, 193, 0.4);
+      cursor: pointer;
+      z-index: 100;
+      transition: all 0.3s;
+    }
+
+    .floating-cart:hover {
+      transform: translateY(-5px) scale(1.1);
+      box-shadow: 0 6px 20px rgba(214, 132, 193, 0.5);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: var(--error-color);
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    /* Animation for added items */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .pulse {
+      animation: pulse 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Previous HTML remains the same -->
+
+<div class="floating-cart" onclick="viewCart()">
+  <i class="fas fa-shopping-cart"></i>
+  <div class="cart-count" id="cartCount">0</div>
+</div>
+
+<script>
+  // Previous JavaScript remains the same until the goToCart function
+  
+  function updateCartCount() {
+    const cartData = JSON.parse(localStorage.getItem("iceCreamCart")) || [];
+    const count = cartData.reduce((total, item) => total + item.quantity, 0);
+    document.getElementById('cartCount').textContent = count;
+    return count;
+  }
+
+  function viewCart() {
+    const count = updateCartCount();
+    if (count === 0) {
+      showNotification("Your cart is empty", 'warning');
+    } else {
+      window.location.href = "cart.html";
+    }
+  }
+
+  function goToCart() {
+    if (pack.length !== MAX_PACK) {
+      showNotification("Please select exactly 6 flavors before adding to cart.", 'error');
+      return;
+    }
+
+    const existingCart = JSON.parse(localStorage.getItem("iceCreamCart")) || [];
+    const newPack = {
+      items: [...pack],
+      quantity: 1,
+      price: calculateTotal(),
+      date: new Date().toISOString(),
+      name: "Custom Ice Cream Pack"
+    };
+    
+    existingCart.push(newPack);
+    localStorage.setItem("iceCreamCart", JSON.stringify(existingCart));
+    updateCartCount();
+    
+    showNotification("Pack added to cart successfully!", 'success');
+    
+    // Pulse animation on the pack items
+    const packItems = document.querySelectorAll('.pack-item');
+    packItems.forEach(item => {
+      item.classList.add('pulse');
+      setTimeout(() => {
+        item.classList.remove('pulse');
+      }, 500);
+    });
+
+    setTimeout(() => {
+      window.location.href = "cart.html";
+    }, 1000);
+  }
+
+  // Initialize the app
+  document.addEventListener('DOMContentLoaded', () => {
+    renderProducts();
+    updateUI();
+    updateCartCount();
+    
+    // Load sample cart items if empty for demo
+    if (JSON.parse(localStorage.getItem("iceCreamCart")) === null || 
+        JSON.parse(localStorage.getItem("iceCreamCart")).length === 0) {
+      const samplePack = {
+        items: [flavors[0], flavors[2], flavors[4]],
+        quantity: 1,
+        price: 84.95,
+        date: new Date().toISOString(),
+        name: "Sample Ice Cream Pack"
+      };
+      localStorage.setItem("iceCreamCart", JSON.stringify([samplePack]));
+      updateCartCount();
+    }
+  });
+</script>
+</body>
+</html>
