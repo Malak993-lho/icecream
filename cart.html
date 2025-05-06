@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Ice Cream Cart 🍨</title>
   <style>
     body {
@@ -11,12 +10,14 @@
       padding: 30px;
       overflow-x: hidden;
     }
+
     h1 {
       text-align: center;
       color: #d44a9e;
       font-size: 32px;
       margin-bottom: 10px;
     }
+
     .cart-box {
       max-width: 750px;
       margin: auto;
@@ -26,14 +27,17 @@
       box-shadow: 0 10px 20px rgba(0,0,0,0.1);
       position: relative;
     }
+
     ul {
       padding-left: 20px;
       font-size: 18px;
       color: #512a38;
     }
+
     li {
       margin: 8px 0;
     }
+
     textarea {
       width: 100%;
       padding: 12px;
@@ -44,12 +48,14 @@
       font-size: 16px;
       font-family: inherit;
     }
+
     .total {
       margin-top: 25px;
       font-size: 20px;
       font-weight: bold;
       color: #8e1d63;
     }
+
     .btn {
       margin-top: 20px;
       background: linear-gradient(to right, #f06595, #cc5de8);
@@ -64,23 +70,28 @@
       width: 100%;
       transition: transform 0.2s;
     }
+
     .btn:hover {
       transform: scale(1.03);
     }
+
     .joke {
       font-style: italic;
       margin-top: 10px;
       color: #555;
       text-align: center;
     }
+
     .form-group {
       margin-top: 20px;
     }
+
     .form-group label {
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
     }
+
     .form-group input {
       width: 100%;
       padding: 10px;
@@ -88,17 +99,20 @@
       border: 1px solid #ccc;
       font-size: 16px;
     }
+
     .loading {
       text-align: center;
       margin: 15px 0;
       display: none;
     }
+
     .error-message {
       color: #ff4444;
       text-align: center;
       margin: 10px 0;
       font-weight: bold;
     }
+
     .success-message {
       background-color: #f8f9fa;
       padding: 20px;
@@ -108,14 +122,17 @@
       display: none;
       animation: fadeIn 0.6s ease;
     }
+
     .success-message h2 {
       animation: bounceIn 0.6s ease-out;
     }
+
     @keyframes bounceIn {
       0% { transform: scale(0.5); opacity: 0; }
       60% { transform: scale(1.2); opacity: 1; }
       100% { transform: scale(1); }
     }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -123,43 +140,60 @@
   </style>
 </head>
 <body>
+
 <h1>🛒 Your Ice Cream Cart</h1>
+<form id="orderForm" action="process_order.php" method="POST">
+
+
 <div class="cart-box">
-  <form action="process_order.php" method="POST" id="orderForm">
+  <form id="orderForm">
     <ul id="cartList"></ul>
     <div class="total" id="cartTotal">Total: $0.00</div>
+
     <div class="form-group">
       <label for="name">👤 Full Name:</label>
       <input type="text" id="name" name="name" required>
     </div>
+
     <div class="form-group">
       <label for="email">📧 Email:</label>
       <input type="email" id="email" name="email" required>
     </div>
+
     <div class="form-group">
       <label for="phone">📱 Phone:</label>
-      <input type="tel" id="phone" name="phone" required pattern="^(\+961|0)?[1-9][0-9]{7}$">
+      <input type="tel" id="phone" name="phone" required>
+
+
+
     </div>
+
     <label for="comment">✏️ Add a note to your order:</label>
-    <textarea id="comment" name="note" rows="4" placeholder="Example: Please freeze it with love! ❄️💖 Include your building number or alternative email if needed 📬"></textarea>
+    <textarea id="comment" name="note" rows="4" placeholder="Example: Please freeze it with love! ❄️💖 Include your building number or alternative email if needed 💌"></textarea>
+
     <input type="hidden" id="cartItemsData" name="cart_items">
     <input type="hidden" id="cartTotalData" name="total">
+
     <div class="loading" id="loadingSpinner">
       <p>Processing your delicious order... 🍦</p>
     </div>
+
     <div class="error-message" id="errorMessage"></div>
+
     <button type="submit" class="btn" id="submitBtn">🍦 GET MY ICE CREAM!</button>
-    <div class="success-message" id="thankYouMessage">
-      <h2>🎉 Thank you for your order!</h2>
-      <p id="orderDetails"></p>
-      <div class="joke" id="jokeText"></div>
-    </div>
   </form>
+
+  <div class="success-message" id="thankYouMessage">
+    <h2>🎉 Thank you for your order!</h2>
+    <p id="orderDetails"></p>
+    <div class="joke" id="jokeText"></div>
+  </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
   const jokes = [
-    "Why did the ice cream truck break down? Because of the rocky road! 🍢",
+    "Why did the ice cream truck break down? Because of the rocky road! 🍫",
     "I scream, you scream, we all scream for... discounts! 😂",
     "What do you call an ice cream that's on TikTok? A popsicle influencer! 📱",
     "Why did the banana split? It saw the sundae coming! 🍌🍨",
@@ -189,7 +223,8 @@
       return;
     }
 
-    const pack = cartData[cartData.length - 1].items;
+    // Check if cartData has items property
+    const pack = cartData[cartData.length - 1].items || [];
     pack.forEach(item => {
       const price = item.price ? parseFloat(item.price) : 14.16;
       flavorCounts[item.name] = (flavorCounts[item.name] || 0) + 1;
@@ -201,8 +236,8 @@
       cartList.innerHTML += `<li><span class="emoji">🍨</span> (${flavorCounts[flavor]}) ${flavor}</li>`;
     }
 
-    document.getElementById('cartItemsData').value = itemsForProcessing.map(item => `(${item.quantity}) ${item.name}`).join(", ");
-    document.getElementById('cartTotalData').value = totalPrice;
+    document.getElementById("cartTotalData").value = totalPrice.toFixed(2);
+    document.getElementById("cartItemsData").value = JSON.stringify(itemsForProcessing);
     cartTotal.textContent = `Total: $${totalPrice.toFixed(2)}`;
 
     orderForm.addEventListener("submit", function (e) {
@@ -225,27 +260,57 @@
       loadingSpinner.style.display = "block";
       errorMessage.textContent = "";
 
+      // Create FormData object from the form
+      const formData = new FormData(orderForm);
+
+      // Make the fetch request to process_order.php
       fetch("process_order.php", {
         method: "POST",
-        body: new FormData(orderForm)
+        body: formData,
       })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) throw new Error("Network response was not ok");
+        return response.json();
+      })
       .then(data => {
-        if (data.success) {
-          window.location.href = "thankyou.html";
-        } else {
-          errorMessage.textContent = data.message || "Something went wrong!";
-        }
+        console.log("Order Success:", data);
+      
+        // Redirect to thank you page
+        localStorage.removeItem("iceCreamCart");
+        window.location.href = "thankyou.html";
+      })
+      
+        
+        // Show success message
+        const joke = jokes[Math.floor(Math.random() * jokes.length)];
+        const orderSummary = `
+          <h2>🍦 Your Order is on the Way!</h2>
+          <p><strong>Order ID:</strong> #${data.order_id || Math.floor(Math.random() * 10000)}</p>
+          <p><strong>Total:</strong> $${totalPrice.toFixed(2)}</p>
+          <p><strong>Note:</strong> ${document.getElementById("comment").value || 'No note provided.'}</p>
+          <p>We'll deliver it with sprinkles and love! 💕</p>
+        `;
+        
+        orderDetails.innerHTML = orderSummary;
+        jokeText.textContent = joke;
+        thankYouMessage.style.display = "block";
+        orderForm.style.display = "none";
+        
+        localStorage.removeItem("iceCreamCart");
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
       })
       .catch(error => {
-        errorMessage.textContent = "Server error: " + error.message;
+        console.error("Error submitting order:", error.message);
+        errorMessage.textContent = "There was an error processing your order. Please try again.";
+        submitBtn.disabled = false;
       })
       .finally(() => {
         loadingSpinner.style.display = "none";
-        submitBtn.disabled = false;
       });
-    });      
-  });
+    });
+  
+
+
 </script>
 </body>
 </html>
