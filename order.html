@@ -1,40 +1,35 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Create & Edit Ice Cream Pack</title>
   <style>
     body {
       font-family: 'Arial', sans-serif;
+      background: #fff8f0;
       padding: 0;
       margin: 0;
-      background: #fff8f0;
     }
-
     header {
       background: #fff;
       padding: 30px 20px 10px;
       text-align: center;
       border-bottom: 1px solid #e4d3ba;
     }
-
     header h1 {
       font-size: 32px;
       color: #d684c1;
       margin-bottom: 10px;
     }
-
     .subtext {
       color: #b66da4;
       font-weight: bold;
     }
-
     .pricing {
       font-size: 18px;
       color: #42200b;
     }
-
     .products {
       display: flex;
       justify-content: center;
@@ -42,7 +37,6 @@
       gap: 20px;
       padding: 30px;
     }
-
     .product {
       background: #fff;
       border-radius: 10px;
@@ -51,14 +45,12 @@
       padding: 15px;
       width: 200px;
     }
-
     .product img {
       width: 100%;
       height: 150px;
       object-fit: cover;
       border-radius: 8px;
     }
-
     button {
       margin-top: 10px;
       padding: 8px 12px;
@@ -69,12 +61,10 @@
       font-weight: bold;
       cursor: pointer;
     }
-
     .status-bar {
       text-align: center;
       margin-top: 20px;
     }
-
     .icons span {
       display: inline-block;
       width: 20px;
@@ -83,11 +73,9 @@
       background: #eee;
       margin: 2px;
     }
-
     .icons .filled {
       background: #bb7fbb;
     }
-
     .edit-pack {
       max-width: 90%;
       margin: 30px auto;
@@ -95,19 +83,16 @@
       background: #e0b2da;
       border-radius: 8px;
     }
-
     .edit-pack h2 {
       font-size: 24px;
       color: #d39fd9;
       margin-bottom: 20px;
     }
-
     .pack-items {
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
     }
-
     .pack-item {
       background: #fff;
       border-radius: 10px;
@@ -117,7 +102,6 @@
       width: 300px;
       justify-content: space-between;
     }
-
     .pack-item img {
       width: 60px;
       height: 60px;
@@ -125,19 +109,16 @@
       object-fit: cover;
       margin-right: 10px;
     }
-
     .pack-info {
       flex: 1;
       font-weight: bold;
       color: #a592a3;
     }
-
     .remove-btn {
       color: #e07bdb;
       font-size: 20px;
       cursor: pointer;
     }
-
     .footer-bar {
       display: flex;
       align-items: center;
@@ -148,7 +129,6 @@
       border-top: 1px solid #efe5f1;
       border-radius: 0 0 8px 8px;
     }
-
     .clear-btn {
       background: none;
       border: 2px solid #db57d2;
@@ -158,7 +138,6 @@
       font-weight: bold;
       cursor: pointer;
     }
-
     .add-cart-btn {
       background: #d695cd;
       padding: 12px 20px;
@@ -175,18 +154,14 @@
 
 <header>
   <h1>Create Your Own Gift Pack</h1>
-  <div class="subtext">Our coolers hold 6 pints. Nationwide delivery, frozen guaranteed.</div>
-  <div class="pricing">6-PINT COOLER $84.95</div>
+  <div class="subtext">Each cup holds 6 scoops. Fill all cups to complete your cooler!</div>
+  <div class="pricing" id="priceText">COOLER PACK</div>
 </header>
 
-
-
-<div class="products" id="productList">
-  <!-- Products will be loaded here -->
-</div>
+<div class="products" id="productList"></div>
 
 <div class="status-bar">
-  <p id="neededText">6 needed for the 6 pack</p>
+  <p id="neededText">Loading...</p>
   <div class="icons" id="packIcons"></div>
 </div>
 
@@ -195,29 +170,46 @@
   <div class="pack-items" id="packItems"></div>
   <div class="footer-bar">
     <button class="clear-btn" onclick="clearPack()">CLEAR PACK</button>
-    <div class="needed-count" id="needed">6 needed for the 6 pack</div>
+    <div class="needed-count" id="needed">Loading...</div>
     <button class="add-cart-btn" id="addToCartBtn" onclick="goToCart()">ADD PACK TO CART</button>
-
   </div>
 </div>
 
 <script>
-  const MAX_PACK = 6;
-  let pack = [];
+  let MAX_SCOOPS = 6;
+  let MAX_CUPS = 3;
+  let packs = [];
+  let currentCup = 0;
 
   const flavors = [
-  { name: 'Vanilla Bean', image: './images/vanilla_bean.png' },
-  { name: 'Strawberry Chocolate Chip', image: './images/strawberry_chocolate_chip.png' },
-  { name: 'Chocolate Fudge', image: './images/chocolate_fudge.png' },
-  { name: 'Mint Chip', image: './images/mint_chip.png' },
-  { name: 'Caramel Crunch', image: './images/caramel_crunch.png' },
-  { name: 'Cookies & Cream', image: './images/cookies_and_cream.png' },
-  { name: 'Lemon Sorbet', image: './images/lemon_sorbet.png' },
-  { name: 'Blueberry Muffin', image: './images/blueberry_muffin.png' },
-  { name: 'Tropical Coconut', image: './images/tropical_coconut.png' },
-  { name: 'Peanut Butter Cup', image: './images/peanut_butter_cup.png' },
-];
+    { name: 'Vanilla Bean', image: './imag/buckey biltz chcolclate.png' },
+    { name: 'Strawberry Chocolate Chip', image: './imag/banana Chocolate Chip.png' },
+    { name: 'Chocolate Fudge', image: './imag/Black Cherry Chocolate Chip.png' },
+    { name: 'Mint Chip', image: './imag/bodly bearcat.png' },
+    { name: 'Caramel Crunch', image: './imag/Black Cherry Chocolate Chip.png' },
+    { name: 'Cookies & Cream', image: './imag/buckey biltz chcolclate.png' },
+    { name: 'Lemon Sorbet', image: './imag/butter peacen.png' },
+    { name: 'Blueberry Muffin', image: './imag/Raspberry Chocolate Chip.png' },
+    { name: 'Tropical Coconut', image: './imag/Screenshot 2025-04-18 at 23.56.14.png' },
+    { name: 'Peanut Butter Cup', image: './imag/Brown pancake.png' },
+  ];
 
+  function askHowManyCups() {
+    let count = prompt("🧁 How many cups do you want to create? (Each cup holds 6 scoops)", "3");
+    count = parseInt(count);
+    if (isNaN(count) || count <= 0 || count > 10) {
+      alert("Please enter a valid number between 1 and 10.");
+      return askHowManyCups();
+    }
+
+    MAX_CUPS = count;
+    packs = Array.from({ length: MAX_CUPS }, () => []);
+    currentCup = 0;
+
+    document.getElementById("priceText").innerText = `${MAX_CUPS}-CUP COOLER $${(MAX_CUPS * 6 * 14.16).toFixed(2)}`;
+    renderProducts();
+    updateUI();
+  }
 
   function renderProducts() {
     const container = document.getElementById("productList");
@@ -233,21 +225,34 @@
   }
 
   function addToPack(index) {
-    if (pack.length >= MAX_PACK) {
-      alert("Pack is full!");
+    if (currentCup >= MAX_CUPS) {
+      alert("All cups are full!");
       return;
     }
-    pack.push(flavors[index]);
+
+    if (packs[currentCup].length >= MAX_SCOOPS) {
+      alert(`Cup ${currentCup + 1} is full!`);
+      return;
+    }
+
+    packs[currentCup].push(flavors[index]);
+
+    if (packs[currentCup].length === MAX_SCOOPS && currentCup < MAX_CUPS - 1) {
+      currentCup++;
+    }
+
     updateUI();
   }
 
-  function removeFromPack(index) {
-    pack.splice(index, 1);
+  function removeFromPack(cupIndex, flavorIndex) {
+    packs[cupIndex].splice(flavorIndex, 1);
+    if (cupIndex < currentCup) currentCup = cupIndex;
     updateUI();
   }
 
   function clearPack() {
-    pack = [];
+    packs = Array.from({ length: MAX_CUPS }, () => []);
+    currentCup = 0;
     updateUI();
   }
 
@@ -258,59 +263,51 @@
     const packItems = document.getElementById("packItems");
     const addToCartBtn = document.getElementById("addToCartBtn");
 
-    // Update top status
-    const remaining = MAX_PACK - pack.length;
-    neededText.innerText = `${remaining} needed for the 6 pack`;
-    needed.innerText = `${remaining} needed for the 6 pack`;
+    const remaining = MAX_SCOOPS - packs[currentCup].length;
+    neededText.innerText = `Cup ${currentCup + 1} – ${remaining} needed`;
+    needed.innerText = `Cup ${currentCup + 1} – ${remaining} needed`;
 
-    // Update icons
     icons.innerHTML = "";
-    for (let i = 0; i < MAX_PACK; i++) {
+    for (let i = 0; i < MAX_SCOOPS; i++) {
       const span = document.createElement("span");
-      if (i < pack.length) span.classList.add("filled");
+      if (i < packs[currentCup].length) span.classList.add("filled");
       icons.appendChild(span);
     }
 
-    // Update edit pack items
     packItems.innerHTML = "";
-    pack.forEach((flavor, index) => {
-      packItems.innerHTML += `
-        <div class="pack-item">
-          <img src="${flavor.image}" alt="${flavor.name}">
-          <div class="pack-info">${flavor.name}</div>
-          <div class="remove-btn" onclick="removeFromPack(${index})">&times;</div>
-        </div>`;
+    packs.forEach((cup, cupIndex) => {
+      cup.forEach((flavor, flavorIndex) => {
+        packItems.innerHTML += `
+          <div class="pack-item">
+            <img src="${flavor.image}" alt="${flavor.name}">
+            <div class="pack-info">Cup ${cupIndex + 1}: ${flavor.name}</div>
+            <div class="remove-btn" onclick="removeFromPack(${cupIndex}, ${flavorIndex})">&times;</div>
+          </div>`;
+      });
     });
 
-    // Enable/Disable add to cart
-    addToCartBtn.disabled = pack.length < MAX_PACK;
+    addToCartBtn.disabled = packs.some(cup => cup.length < MAX_SCOOPS);
   }
 
-function goToCart() {
-  let existingCart = JSON.parse(localStorage.getItem("iceCreamCart")) || [];
+  function goToCart() {
+    if (packs.some(cup => cup.length < MAX_SCOOPS)) {
+      alert("Please complete all cups before adding to cart.");
+      return;
+    }
 
-  // Only continue if the pack has 6 items
-  if (pack.length !== 6) {
-    alert("Please select exactly 6 flavors before adding to cart.");
-    return;
+    let existingCart = JSON.parse(localStorage.getItem("iceCreamCart")) || [];
+    existingCart.push({ cups: packs, quantity: 1 });
+
+    localStorage.setItem("iceCreamCart", JSON.stringify(existingCart));
+
+    packs = [];
+    currentCup = 0;
+
+    window.location.href = "cart.html";
   }
 
-  // Save the current pack with quantity
-  existingCart.push({
-    items: [...pack],   // save a copy of selected items
-    quantity: 1
-  });
-
-  localStorage.setItem("iceCreamCart", JSON.stringify(existingCart));
-
-  // Redirect to cart page
-  window.location.href = "cart.html";
-}
-
-
-  
-  renderProducts();
-  updateUI();
+  // Ask on load
+  window.onload = askHowManyCups;
 </script>
 
 </body>

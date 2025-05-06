@@ -22,11 +22,24 @@
     transition: ease all 0.5s;
 }
 
- 
+.login_bt a {
+    color: #222222;
+  }
+  #loadingSpinner,
+#thankYouMessage,
+#errorMessage {
+  display: none;
+}
+
  .order_bt a:hover {
     background-color: #e3bae0;
     color: #fff;
  }
+ .centered-margin {
+    text-align: center;
+    margin-top: 30px;
+  }
+  
  
  .order_bt a {
     display: inline-block;

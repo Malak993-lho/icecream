@@ -1,23 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Your Ice Cream Cart 🍨</title>
   <style>
     body {
       font-family: 'Comic Sans MS', cursive, sans-serif;
       background: #fff0f5;
       padding: 30px;
-      overflow-x: hidden;
     }
-
     h1 {
       text-align: center;
       color: #d44a9e;
       font-size: 32px;
-      margin-bottom: 10px;
     }
-
     .cart-box {
       max-width: 750px;
       margin: auto;
@@ -25,37 +22,35 @@
       padding: 30px;
       border-radius: 16px;
       box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-      position: relative;
     }
-
     ul {
-      padding-left: 20px;
       font-size: 18px;
       color: #512a38;
     }
-
     li {
       margin: 8px 0;
     }
-
-    textarea {
+    textarea, input[type="text"], input[type="email"], input[type="tel"] {
       width: 100%;
       padding: 12px;
-      border-radius: 10px;
+      margin-top: 8px;
       border: 1px solid #ccc;
-      margin-top: 20px;
-      resize: none;
+      border-radius: 10px;
       font-size: 16px;
       font-family: inherit;
     }
-
+    .form-group {
+      margin-top: 20px;
+    }
+    .form-group label {
+      font-weight: bold;
+    }
     .total {
       margin-top: 25px;
       font-size: 20px;
       font-weight: bold;
       color: #8e1d63;
     }
-
     .btn {
       margin-top: 20px;
       background: linear-gradient(to right, #f06595, #cc5de8);
@@ -65,252 +60,130 @@
       border-radius: 10px;
       padding: 12px 24px;
       font-size: 16px;
-      cursor: pointer;
-      display: block;
       width: 100%;
-      transition: transform 0.2s;
+      cursor: pointer;
     }
-
     .btn:hover {
       transform: scale(1.03);
     }
-
-    .joke {
-      font-style: italic;
-      margin-top: 10px;
-      color: #555;
-      text-align: center;
-    }
-
-    .form-group {
-      margin-top: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
-
-    .loading {
-      text-align: center;
-      margin: 15px 0;
-      display: none;
-    }
-
     .error-message {
-      color: #ff4444;
-      text-align: center;
-      margin: 10px 0;
+      color: red;
       font-weight: bold;
-    }
-
-    .success-message {
-      background-color: #f8f9fa;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 20px;
+      margin-top: 10px;
       text-align: center;
-      display: none;
-      animation: fadeIn 0.6s ease;
-    }
-
-    .success-message h2 {
-      animation: bounceIn 0.6s ease-out;
-    }
-
-    @keyframes bounceIn {
-      0% { transform: scale(0.5); opacity: 0; }
-      60% { transform: scale(1.2); opacity: 1; }
-      100% { transform: scale(1); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-
 <h1>🛒 Your Ice Cream Cart</h1>
-<form id="orderForm" action="process_order.php" method="POST">
-
-
 <div class="cart-box">
-  <form id="orderForm">
+  <form action="process_order.php" method="POST" id="orderForm">
     <ul id="cartList"></ul>
     <div class="total" id="cartTotal">Total: $0.00</div>
 
     <div class="form-group">
       <label for="name">👤 Full Name:</label>
-      <input type="text" id="name" name="name" required>
+      <input type="text" id="name" name="name" required />
     </div>
 
     <div class="form-group">
       <label for="email">📧 Email:</label>
-      <input type="email" id="email" name="email" required>
+      <input type="email" id="email" name="email" required />
     </div>
 
     <div class="form-group">
       <label for="phone">📱 Phone:</label>
-      <input type="tel" id="phone" name="phone" required>
-
-
-
+      <input type="tel" id="phone" name="phone" required pattern="^(\+961|0)?[1-9][0-9]{7}$" />
     </div>
 
-    <label for="comment">✏️ Add a note to your order:</label>
-    <textarea id="comment" name="note" rows="4" placeholder="Example: Please freeze it with love! ❄️💖 Include your building number or alternative email if needed 💌"></textarea>
+    <label for="note">✏️ Add a note to your order:</label>
+    <textarea id="note" name="note" rows="4" placeholder="Please freeze with love 💖, and deliver ASAP!"></textarea>
 
-    <input type="hidden" id="cartItemsData" name="cart_items">
-    <input type="hidden" id="cartTotalData" name="total">
-
-    <div class="loading" id="loadingSpinner">
-      <p>Processing your delicious order... 🍦</p>
-    </div>
+    <input type="hidden" id="cartItemsData" name="cart_items" />
+    <input type="hidden" id="cartTotalData" name="total" />
 
     <div class="error-message" id="errorMessage"></div>
 
-    <button type="submit" class="btn" id="submitBtn">🍦 GET MY ICE CREAM!</button>
+    <button type="submit" class="btn" id="submitBtn">🍦 Confirm & Pay</button>
   </form>
-
-  <div class="success-message" id="thankYouMessage">
-    <h2>🎉 Thank you for your order!</h2>
-    <p id="orderDetails"></p>
-    <div class="joke" id="jokeText"></div>
-  </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
-  const jokes = [
-    "Why did the ice cream truck break down? Because of the rocky road! 🍫",
-    "I scream, you scream, we all scream for... discounts! 😂",
-    "What do you call an ice cream that's on TikTok? A popsicle influencer! 📱",
-    "Why did the banana split? It saw the sundae coming! 🍌🍨",
-    "Life is better with sprinkles and zero regrets! 🌈"
-  ];
-
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener("DOMContentLoaded", function () {
     const cartList = document.getElementById("cartList");
     const cartTotal = document.getElementById("cartTotal");
-    const orderForm = document.getElementById("orderForm");
-    const loadingSpinner = document.getElementById("loadingSpinner");
+    const cartItemsData = document.getElementById("cartItemsData");
+    const cartTotalData = document.getElementById("cartTotalData");
     const errorMessage = document.getElementById("errorMessage");
-    const thankYouMessage = document.getElementById("thankYouMessage");
-    const orderDetails = document.getElementById("orderDetails");
-    const jokeText = document.getElementById("jokeText");
     const submitBtn = document.getElementById("submitBtn");
+    const orderForm = document.getElementById("orderForm");
 
     const cartData = JSON.parse(localStorage.getItem("iceCreamCart")) || [];
-    let totalPrice = 0;
-    const flavorCounts = {};
-    const itemsForProcessing = [];
+    const lastPack = cartData[cartData.length - 1];
 
-    if (cartData.length === 0) {
-      cartList.innerHTML = "<li>No items yet!</li>";
-      submitBtn.disabled = true;
+    if (!lastPack || !lastPack.cups) {
+      cartList.innerHTML = "<li>No items found!</li>";
       cartTotal.style.display = "none";
+      submitBtn.disabled = true;
       return;
     }
 
-    // Check if cartData has items property
-    const pack = cartData[cartData.length - 1].items || [];
-    pack.forEach(item => {
-      const price = item.price ? parseFloat(item.price) : 14.16;
-      flavorCounts[item.name] = (flavorCounts[item.name] || 0) + 1;
-      totalPrice += price;
-      itemsForProcessing.push({ name: item.name, quantity: 1, price: price.toFixed(2) });
+    let totalPrice = 0;
+    let items = [];
+    const pricePerScoop = 14.16;
+
+    lastPack.cups.forEach((cup, index) => {
+      cartList.innerHTML += `<li><strong>🍧 Cup ${index + 1}</strong></li>`;
+      cup.forEach((item) => {
+        cartList.innerHTML += `<li>&nbsp;&nbsp;&nbsp;&nbsp;🍨 ${item.name}</li>`;
+        totalPrice += pricePerScoop;
+        items.push(`(1) ${item.name}`);
+      });
     });
 
-    for (let flavor in flavorCounts) {
-      cartList.innerHTML += `<li><span class="emoji">🍨</span> (${flavorCounts[flavor]}) ${flavor}</li>`;
-    }
-
-    document.getElementById("cartTotalData").value = totalPrice.toFixed(2);
-    document.getElementById("cartItemsData").value = JSON.stringify(itemsForProcessing);
-    cartTotal.textContent = `Total: $${totalPrice.toFixed(2)}`;
+    cartTotal.innerText = `Total: $${totalPrice.toFixed(2)}`;
+    cartItemsData.value = items.join(", ");
+    cartTotalData.value = totalPrice.toFixed(2);
 
     orderForm.addEventListener("submit", function (e) {
       e.preventDefault();
+
       const name = document.getElementById("name").value.trim();
       const email = document.getElementById("email").value.trim();
       const phone = document.getElementById("phone").value.trim();
 
       if (!name || !email || !phone) {
-        errorMessage.textContent = "Please fill in all required fields";
+        errorMessage.textContent = "❗ Please fill in all required fields.";
         return;
       }
 
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        errorMessage.textContent = "Please enter a valid email address";
+        errorMessage.textContent = "❗ Invalid email format.";
         return;
       }
 
       submitBtn.disabled = true;
-      loadingSpinner.style.display = "block";
-      errorMessage.textContent = "";
 
-      // Create FormData object from the form
-      const formData = new FormData(orderForm);
-
-      // Make the fetch request to process_order.php
       fetch("process_order.php", {
         method: "POST",
-        body: formData,
+        body: new FormData(orderForm)
       })
-      .then(response => {
-        if (!response.ok) throw new Error("Network response was not ok");
-        return response.json();
-      })
-      .then(data => {
-        console.log("Order Success:", data);
-      
-        // Redirect to thank you page
-        localStorage.removeItem("iceCreamCart");
-        window.location.href = "thankyou.html";
-      })
-      
-        
-        // Show success message
-        const joke = jokes[Math.floor(Math.random() * jokes.length)];
-        const orderSummary = `
-          <h2>🍦 Your Order is on the Way!</h2>
-          <p><strong>Order ID:</strong> #${data.order_id || Math.floor(Math.random() * 10000)}</p>
-          <p><strong>Total:</strong> $${totalPrice.toFixed(2)}</p>
-          <p><strong>Note:</strong> ${document.getElementById("comment").value || 'No note provided.'}</p>
-          <p>We'll deliver it with sprinkles and love! 💕</p>
-        `;
-        
-        orderDetails.innerHTML = orderSummary;
-        jokeText.textContent = joke;
-        thankYouMessage.style.display = "block";
-        orderForm.style.display = "none";
-        
-        localStorage.removeItem("iceCreamCart");
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-      })
-      .catch(error => {
-        console.error("Error submitting order:", error.message);
-        errorMessage.textContent = "There was an error processing your order. Please try again.";
-        submitBtn.disabled = false;
-      })
-      .finally(() => {
-        loadingSpinner.style.display = "none";
-      });
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            window.location.href = "thankyou.html";
+          } else {
+            errorMessage.textContent = data.message || "An error occurred.";
+          }
+        })
+        .catch(err => {
+          errorMessage.textContent = "❗ Server error: " + err.message;
+        })
+        .finally(() => {
+          submitBtn.disabled = false;
+        });
     });
-  
-
-
+  });
 </script>
 </body>
 </html>
